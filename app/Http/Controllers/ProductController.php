@@ -11,31 +11,18 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        // $keyword = $request->get('search');
-
-        // if(!empty($keyword)) {
-        //     $product = Product::where('name', 'LIKE', "%$keyword%")
-        //             ->orWhere('category', 'LIKE', "%$keyword%")->get();
-        //     // $product = Product::find($keyword);
-        //     return response()->json([
-        //                 'status' => true,
-        //                 'keyword' => $keyword,
-        //                 'message' => 'data ditemukan',
-        //                 'data' => $product,
-        //             ], 200);
-        // }
-        // else {
-        //     $data = Product::orderBy('name', 'asc')->get();
-        //     return response()->json([
-        //         'status' => true,
-        //         'message' => 'data ditemukan',
-        //         'data' => $data,
-        //     ], 200);
-        // }
-
         $products = Product::paginate(10);
         return view('products.index', ['products' => $products]);    
     }
+
+    public function productList()
+    {
+        $products = Product::all();
+
+        return view('products.store', ['products' => $products]);
+    }
+
+
 
     public function create(){
         return view('products.create');
@@ -158,23 +145,17 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         $dataProduct = Product::find($id);
-
-        if(empty($dataProduct)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'data not found',
-            ], 404);
+    
+        if (empty($dataProduct)) {
+            return redirect(route('product.index'))->with('error', 'Product not found');
         }
-
-        $post = $dataProduct->delete();
-
-        return redirect(route('product.index'))->with('success', 'Product deleted Succesffully');
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => 'product deleted successfully',
-        // ]);
+    
+        $dataProduct->delete();
+    
+        return redirect(route('product.index'))->with('success', 'Product deleted successfully');
     }
+    
 }

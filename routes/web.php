@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,15 @@ Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name(
 
 Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
 
-Route::get('/product/{product}/delete', [ProductController::class, 'delete'])->name('product.delete');
+Route::delete('/product/{product}/delete', [ProductController::class, 'destroy'])->name('product.delete');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/store', [ProductController::class, 'productList'])->name('product.list');
+Route::get('/cart', [CartController::class, 'cartList'])->name('cart.list');
+Route::post('/cart', [CartController::class, 'addToCart'])->name('cart.store');
+Route::post('/update-cart', [CartController::class, 'updateCart'])->name('cart.update');
+Route::post('/remove', [CartController::class, 'removeCart'])->name('cart.remove');
+Route::post('/clear', [CartController::class, 'clearAllCart'])->name('cart.clear');
