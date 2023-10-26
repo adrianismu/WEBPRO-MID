@@ -1,12 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.app') <!-- Meng-extend tampilan 'layouts.app' -->
 
-@section('content')
+@section('content') <!-- Mendefinisikan bagian konten -->
     <div style="text-align: center;">
-        <h1>Add a Product</h1>
+        <h1>Add a Product</h1> <!-- Judul untuk menambahkan produk -->
         <div style="margin: 20px auto;">
             <form method="POST" action="{{route('product.store')}}" enctype="multipart/form-data">
-                @csrf
-                @method('post')
+                @csrf <!-- Token CSRF untuk keamanan -->
+                @method('post') <!-- Melakukan override metode HTTP menjadi POST -->
                 <div class="max-w-2xl mx-auto p-4 bg-white rounded-lg shadow-lg">
                     <div class="mb-4">
                         <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save a new product</button>
+                        <button type="submit" class="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded">Simpan produk baru</button>
                     </div>
                 </div>
             </form>

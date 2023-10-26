@@ -19,14 +19,14 @@ class ConfirmPasswordController extends Controller
     |
     */
 
-    use ConfirmsPasswords;
+    use ConfirmsPasswords; // Menggunakan trait untuk meng-handle konfirmasi kata sandi
 
     /**
-     * Where to redirect users when the intended url fails.
+     * Where to redirect users when the intended URL fails.
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::HOME; // Alamat tujuan saat URL yang dimaksud gagal
 
     /**
      * Create a new controller instance.
@@ -35,6 +35,6 @@ class ConfirmPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth'); // Menerapkan middleware 'auth' ke kontroller
     }
 }

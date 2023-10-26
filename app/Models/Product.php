@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory; // Menggunakan HasFactory untuk factory model
 
-    protected $table = 'products';
-    protected $fillable = ['name', 'category', 'quantity', 'price', 'image'];
+    protected $table = 'products'; // Menetapkan nama tabel yang digunakan dalam basis data
+    protected $fillable = ['name', 'category', 'quantity', 'price', 'image']; // Menentukan kolom yang dapat diisi (fillable) ketika menyimpan data produk
 }

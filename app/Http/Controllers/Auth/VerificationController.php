@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Foundation\Auth\VerifiesEmails; // Menggunakan trait VerifiesEmails untuk meng-handle verifikasi email
 
 class VerificationController extends Controller
 {
@@ -19,14 +19,14 @@ class VerificationController extends Controller
     |
     */
 
-    use VerifiesEmails;
+    use VerifiesEmails; // Menggunakan trait VerifiesEmails yang menyediakan fungsionalitas verifikasi email
 
     /**
      * Where to redirect users after verification.
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::HOME; // Mengarahkan pengguna ke lokasi tertentu setelah verifikasi email
 
     /**
      * Create a new controller instance.
@@ -35,8 +35,8 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
+        $this->middleware('auth'); // Memastikan pengguna harus sudah login
+        $this->middleware('signed')->only('verify'); // Hanya menerapkan middleware 'signed' pada metode 'verify'
+        $this->middleware('throttle:6,1')->only('verify', 'resend'); // Hanya menerapkan middleware 'throttle' pada metode 'verify' dan 'resend'
     }
 }

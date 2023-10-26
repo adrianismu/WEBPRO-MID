@@ -1,28 +1,30 @@
-@extends('layouts.app')
+@extends('layouts.app') {{-- Memperluas tampilan dari layouts.app --}}
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+@section('content') {{-- Mendefinisikan bagian konten --}}
+<div class="container"> {{-- Kontainer untuk konten halaman --}}
+    <div class="row justify-content-center"> {{-- Baris untuk menengahkan konten --}}
+        <div class="col-md-8"> {{-- Kolom dengan lebar 8 unit --}}
+            <div class="card"> {{-- Kontainer kartu untuk verifikasi alamat email --}}
+                <div class="card-header">{{ __('Verifikasi Alamat Email Anda') }}</div>
+                {{-- Header kartu dengan pesan Verifikasi Alamat Email Anda --}}
 
-                <div class="card-body">
+                <div class="card-body"> {{-- Tubuh kartu untuk konten utama --}}
                     @if (session('resent'))
                         <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
+                            {{ __('Tautan verifikasi baru telah dikirimkan ke alamat email Anda.') }}
                         </div>
                     @endif
 
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }},
+                    {{ __('Sebelum melanjutkan, harap periksa email Anda untuk tautan verifikasi.') }}
+                    {{ __('Jika Anda tidak menerima email tersebut') }},
+
                     <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                        @csrf {{-- Token CSRF untuk keamanan --}}
+                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('klik di sini untuk meminta yang lain') }}</button>.
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
+@endsection {{-- Akhir dari bagian konten --}}

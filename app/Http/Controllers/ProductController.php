@@ -2,40 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Product;
+use Validator; // Mengimpor kelas Validator
+use App\Http\Controllers\Controller; // Mengimpor kelas Controller
+use Illuminate\Http\Request; // Mengimpor kelas Request
+use App\Models\Product; // Mengimpor model Product
 
-class ProductController extends Controller
+class ProductController extends Controller // Mendefinisikan kelas ProductController yang meng-extends kelas Controller
 {
-    public function index(Request $request)
+    public function index(Request $request) // Metode index untuk menampilkan daftar produk
     {
-        $products = Product::paginate(10);
-        return view('products.index', ['products' => $products]);    
+        $products = Product::paginate(10); // Mengambil daftar produk dengan pembagian halaman
+        return view('products.index', ['products' => $products]); // Menampilkan tampilan 'products.index' dengan data produk
     }
 
-    public function productList()
+    public function productList() // Metode productList untuk menampilkan daftar produk tanpa pembagian halaman
     {
-        $products = Product::all();
-
-        return view('products.store', ['products' => $products]);
+        $products = Product::all(); // Mengambil semua produk
+        return view('products.store', ['products' => $products]); // Menampilkan tampilan 'products.store' dengan data produk
     }
 
-
-
-    public function create(){
-        return view('products.create');
+    public function create() // Metode create untuk menampilkan tampilan pembuatan produk
+    {
+        return view('products.create'); // Menampilkan tampilan 'products.create'
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) // Metode store untuk menyimpan produk yang baru dibuat
     {
-        $dataProduct = new Product;
+        $dataProduct = new Product; // Membuat instance model Product
 
-        $rules = [
+        $rules = [ // Aturan validasi data produk yang akan disimpan
             'name' => 'required',
             'category' => 'required',
             'qty' => 'required',
@@ -43,9 +41,9 @@ class ProductController extends Controller
             'descriptions' => 'required',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules); // Membuat objek Validator dengan aturan validasi
 
-        if($validator->fails()) {
+        if ($validator->fails()) { // Jika validasi gagal, kirim respons JSON dengan pesan kesalahan
             return response()->json([
                 'status' => false,
                 'message' => 'failed to store',
@@ -53,36 +51,31 @@ class ProductController extends Controller
             ]);
         }
 
+        // Menyimpan data produk ke dalam database
         $dataProduct->name = $request->name;
         $dataProduct->category = $request->category;
         $dataProduct->qty = $request->qty;
         $dataProduct->price = $request->price;
         $dataProduct->descriptions = $request->descriptions;
-
         $post = $dataProduct->save();
         
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => 'product stored successfully',
-        // ]);
-
-        return redirect(route('product.index'));
+        return redirect(route('product.index')); // Mengarahkan kembali ke halaman daftar produk setelah berhasil menyimpan
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id) // Metode show untuk menampilkan detail produk
     {
-        $data = Product::find($id);
-        if($data) {
+        $data = Product::find($id); // Mencari produk berdasarkan ID
+
+        if ($data) { // Jika produk ditemukan, kirim respons JSON dengan data produk
             return response()->json([
                 'status' => true,
                 'message' => 'data ditemukan',
                 'data' => $data,
             ], 200);
-        }
-        else {
+        } else { // Jika produk tidak ditemukan, kirim respons JSON dengan pesan kesalahan
             return response()->json([
                 'status' => false,
                 'message' => 'data tidak ditemukan',
@@ -90,25 +83,26 @@ class ProductController extends Controller
         }
     }
 
-    public function edit(Product $product){
-        return view('products.edit', ['product' => $product]);
+    public function edit(Product $product) // Metode edit untuk menampilkan tampilan pengeditan produk
+    {
+        return view('products.edit', ['product' => $product]); // Menampilkan tampilan 'products.edit' dengan data produk yang akan diedit
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id) // Metode update untuk menyimpan perubahan pada produk
     {
-        $dataProduct = Product::find($id);
+        $dataProduct = Product::find($id); // Mencari produk berdasarkan ID
 
-        if(empty($dataProduct)) {
+        if (empty($dataProduct)) { // Jika produk tidak ditemukan, kirim respons JSON dengan kode status 404
             return response()->json([
                 'status' => false,
                 'message' => 'data not found',
             ], 404);
         }
 
-        $rules = [
+        $rules = [ // Aturan validasi data produk yang akan diubah
             'name' => 'required',
             'category' => 'required',
             'qty' => 'required',
@@ -116,9 +110,9 @@ class ProductController extends Controller
             'descriptions' => 'required',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules); // Membuat objek Validator dengan aturan validasi
 
-        if($validator->fails()) {
+        if ($validator->fails()) { // Jika validasi gagal, kirim respons JSON dengan pesan kesalahan
             return response()->json([
                 'status' => false,
                 'message' => 'failed to update',
@@ -126,36 +120,30 @@ class ProductController extends Controller
             ]);
         }
 
+        // Menyimpan perubahan pada data produk ke dalam database
         $dataProduct->name = $request->name;
         $dataProduct->category = $request->category;
         $dataProduct->qty = $request->qty;
         $dataProduct->price = $request->price;
         $dataProduct->descriptions = $request->descriptions;
-
         $post = $dataProduct->save();
 
-        return redirect(route('product.index'))->with('success', 'Product Updated Succesffully');
-        
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => 'product updated successfully',
-        // ]);
+        return redirect(route('product.index'))->with('success', 'Product Updated Succesffully'); // Mengarahkan kembali ke halaman daftar produk dengan pesan sukses
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(int $id) // Metode destroy untuk menghapus produk
     {
-        $dataProduct = Product::find($id);
-    
-        if (empty($dataProduct)) {
+        $dataProduct = Product::find($id); // Mencari produk berdasarkan ID
+
+        if (empty($dataProduct)) { // Jika produk tidak ditemukan, kirim respons dengan pesan kesalahan
             return redirect(route('product.index'))->with('error', 'Product not found');
         }
-    
-        $dataProduct->delete();
-    
-        return redirect(route('product.index'))->with('success', 'Product deleted successfully');
+
+        $dataProduct->delete(); // Menghapus produk dari database
+
+        return redirect(route('product.index'))->with('success', 'Product deleted successfully'); // Mengarahkan kembali ke halaman daftar produk dengan pesan sukses
     }
-    
 }

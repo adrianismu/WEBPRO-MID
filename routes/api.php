@@ -5,34 +5,39 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| Rute API
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| Di sini adalah tempat Anda dapat mendaftarkan rute API untuk aplikasi Anda. Semua rute ini akan dimuat oleh RouteServiceProvider dan semuanya akan ditugaskan ke grup middleware "api". Buat sesuatu yang hebat!
 |
 */
 
+// Rute untuk mengambil informasi pengguna
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
 
+// Pengelompokan rute terkait otentikasi pengguna
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+    // Rute untuk otentikasi pengguna
+
+    // Mendaftarkan pengguna baru
     Route::post('register', [AuthController::class, 'register']);
+    
+    // Login pengguna
     Route::post('login', [AuthController::class, 'login']);
+    
+    // Logout pengguna
     Route::post('logout', [AuthController::class, 'logout']);
+    
+    // Memperbarui token pengguna
     Route::post('refresh', [AuthController::class, 'refresh']);
+    
+    // Dapatkan informasi pengguna
     Route::post('me', [AuthController::class, 'me']);
-
 });
 
-// Route::get('product', [ProductController::class, 'index']);
-// Route::get('product/{id}', [ProductController::class, 'show']);
-// Route::post('product', [ProductController::class, 'store']);
-// Route::put('product/{id}', [ProductController::class, 'update']);
-// Route::delete('product/{id}', [ProductController::class, 'destroy']);
-
+// Rute sumber daya untuk mengelola produk
 Route::apiResource('product', ProductController::class);
 
-// Route::get('product/search/{cat}', [ProductController::class, 'search']);    
+// Rute untuk mencari produk berdasarkan kategori
+// Route::get('product/search/{cat}', [ProductController::class, 'search']);
